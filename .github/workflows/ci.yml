@@ -171,7 +171,7 @@ jobs:
           brew install gnu-tar
 
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           path: |
             ~/.cargo/git
