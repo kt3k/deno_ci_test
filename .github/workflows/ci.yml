@@ -168,7 +168,6 @@ jobs:
           cargo --version
           deno --version
           tar --version
-          gtar --version
 
       - name: Restore timestamps
         run: python ./tools/restore_mtime.py
