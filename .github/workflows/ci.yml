@@ -166,7 +166,9 @@ jobs:
       - name: Touch diff from main
         shell: bash
         run: |
-          if !(git diff --name-only origin/main HEAD --exit-code > diff.txt); then
+          if git diff --name-only origin/main HEAD --exit-code > diff.txt; then
+            echo No diff from main branch
+          else
             cat diff.txt
             cat diff.txt | xargs touch
           fi
