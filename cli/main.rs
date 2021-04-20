@@ -1188,7 +1188,7 @@ pub fn main() {
     Err(err) => Err(err),
   };
   if let Err(err) = standalone_res {
-    eprintln!("{}: {}", colors::red_bold("error:"), err.to_string());
+    eprintln!("{}: {}", colors::red_bold("error"), err.to_string());
     std::process::exit(1);
   }
 
