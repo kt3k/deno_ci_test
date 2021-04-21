@@ -46,6 +46,9 @@ jobs:
     env:
       RUST_BACKTRACE: full
       CARGO_TERM_COLOR: always
+      CARGO_PROFILE_RELEASE_LTO: ${{ github.event_name == 'pull_request' && 'false' || 'true' }}
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS: ${{ github.event_name == 'pull_request' && '16' || '1' }}
+      CARGO_PROFILE_RELEASE_OPT_LEVEL: ${{ github.event_name == 'pull_request' && '0' || 'z' }}
 
     steps:
       - name: Configure git
@@ -175,9 +178,9 @@ jobs:
             ~/.cargo/registry
             ./target
           key:
-            c-${{ matrix.os }}-${{ matrix.kind }}-${{ hashFiles('Cargo.lock') }}
+            d-${{ matrix.os }}-${{ matrix.kind }}-${{ hashFiles('Cargo.lock') }}
           restore-keys: |
-            c-${{ matrix.os }}-${{ matrix.kind }}-
+            d-${{ matrix.os }}-${{ matrix.kind }}-
 
       - name: Apply and update mtime cache
         uses: ./.github/mtime_cache
