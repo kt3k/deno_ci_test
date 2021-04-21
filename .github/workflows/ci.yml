@@ -46,6 +46,9 @@ jobs:
     env:
       RUST_BACKTRACE: full
       CARGO_TERM_COLOR: always
+      CARGO_PROFILE_RELEASE_LTO: ${{ startsWith(github.ref, 'refs/tags/') && 'fat' || 'off' }}
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS: ${{ startsWith(github.ref, 'refs/tags/') && '1' || '16' }}
+      CARGO_PROFILE_RELEASE_OPT_LEVEL: ${{ startsWith(github.ref, 'refs/tags/') && 'z' || '3' }}
 
     steps:
       - name: Configure git
@@ -179,12 +182,14 @@ jobs:
             a-cargo-home-${{ matrix.os }}-${{ hashFiles('Cargo.lock') }}
 
       - name: Cache build output
+        if: |
+          !startsWith(github.ref, 'refs/tags/')
         uses: actions/cache@v2
         with:
           path: |
             ./target
           key:
-            d-${{ matrix.os }}-${{ matrix.kind }}-${{ hashFiles('Cargo.lock') }}-${{ hashFiles('Cargo.lock') }}
+            j-${{ matrix.os }}-${{ matrix.kind }}-${{ hashFiles('Cargo.toml') }}-${{ hashFiles('Cargo.lock') }}
 
       - name: Apply and update mtime cache
         uses: ./.github/mtime_cache
