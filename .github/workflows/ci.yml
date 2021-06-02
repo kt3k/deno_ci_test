@@ -236,11 +236,11 @@ jobs:
 
       - name: Build release
         if: (matrix.kind == 'test' || matrix.kind == 'bench') && matrix.profile == 'release'
-        run: cargo build --release --locked --all-targets -vv
+        run: cargo build --release --locked --bin deno --bin test_server --lib --tests -vv
 
       - name: Build debug
         if: (matrix.kind == 'test' || matrix.kind == 'bench') && matrix.profile == 'debug'
-        run: cargo build --locked --all-targets
+        run: cargo build --locked --bin deno --bin test_server --lib --tests
 
       - name: Pre-release (linux)
         if: |
@@ -298,13 +298,13 @@ jobs:
 
       - name: Test release
         if: matrix.kind == 'test' && matrix.profile == 'release'
-        run: cargo test --release --locked --all-targets
+        run: cargo test --release --locked --bin deno --bin test_server --lib --tests
 
       - name: Test debug
         if: matrix.kind == 'test' && matrix.profile == 'debug'
         run: |
           cargo test --locked --doc
-          cargo test --locked --all-targets
+          cargo test --locked --bin deno --bin test_server --lib --tests
 
       # TODO(ry) Because CI is so slow on for OSX and Windows, we currently only run WPT on Linux.
       - name: Configure hosts file for WPT (linux)
