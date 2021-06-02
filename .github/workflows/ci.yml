@@ -235,12 +235,16 @@ jobs:
         run: deno run --unstable --allow-write --allow-read --allow-run ./tools/lint.js
 
       - name: Build release
-        if: (matrix.kind == 'test' || matrix.kind == 'bench') && matrix.profile == 'release'
+        if: (matrix.kind == 'test') && matrix.profile == 'release'
         run: cargo build --release --locked --bin deno --bin test_server --lib --tests -vv
 
       - name: Build debug
-        if: (matrix.kind == 'test' || matrix.kind == 'bench') && matrix.profile == 'debug'
+        if: (matrix.kind == 'test') && matrix.profile == 'debug'
         run: cargo build --locked --bin deno --bin test_server --lib --tests
+
+      - name: Build release (bench)
+        if: matrix.kind == 'bench' && matrix.profile == 'release'
+        run: cargo build --release --locked --all-targets
 
       - name: Pre-release (linux)
         if: |
